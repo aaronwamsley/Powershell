@@ -1,0 +1,60 @@
+###########################################################
+# Write-Log                                               #
+# @Purpose - Takes messages and writes them to a log file #
+#            in a uniform and easy to read fashion        #
+#                                                         #
+# If no $logfile variable is defined, will try to create  #
+#   a file in a folder /logs off of the script directory. #
+#                                                         #
+# If no $logginglevel variable is defined, default        #
+#   to ERR.                                               #
+###########################################################
+	$Global:DEBUG = 0
+	$Global:INFO = 1
+	$Global:WARN = 2
+	$Global:ERR = 3
+	$Global:LOGGINGLEVEL = $ERR
+	
+Function Write-Log{
+	Param
+	(
+		[int]$level,
+        [String]$message
+    )
+	
+	switch($level){
+		0 {$logging = "*    DEBUG    *"}
+		1 {$logging = "*INFORMATIONAL*"}
+		2 {$logging = "*   WARNING   *"}
+		3 {$logging = "*    ERROR    *"}
+	}#END SWITCH
+	
+    #if no log file has been defined, we'll create a logs directory and put one in there.
+    if(Get-Variable -Name "logfile" -ErrorAction SilentlyContinue){
+    } #END IF
+    else{
+        #to find find top calling script, grab the callstack and get the calling scripts stack item.
+        $callstack = Get-PSCallStack
+		$scriptStack = $callstack[1]
+        #from top callstack item, grab basename and directory
+        $name = ($scriptStack.command).replace(".ps1", "")
+        $path = ($scriptStack.ScriptName).Replace("\$name.ps1", "")
+        $date = Get-Date -Format "yyyyMMdd"
+        if(!(Test-Path $path\logs)){  #if the directory doesn't exist, create it.
+            New-Item -ItemType Directory -Force -Path "$path\logs" >$null
+			write-host "Created log directory in $path"
+        } #END IF
+		$global:logfile = "$path\logs\$name$date.txt"
+		"Logging started" | Out-File $logfile -Append -Force
+		write-host "Created log file $path\logs\$name$date.txt"
+    } #END ELSE
+
+    #with log file in place, write to it.
+    $date = Get-Date -Format "yyyy-MM-dd HH:mm"
+    $output
+   write-host "Level = $level : logging level = $logginglevel"
+    if($level -ge $loggingLevel){
+		$output = $date + "  *$logging*  " + $message
+		$output | Out-File $logfile -Append -Force
+	}#END IF
+} #END Write-Log
