@@ -7,20 +7,23 @@
 #             updated logging to new format.                 #
 ##############################################################
 
+# Enter KB to be checked here  
+$Patch = Read-Host 'Enter the KB number - eg: KB3011780 '
+
 ##############################################################
 # Global Variables                                           #
 ##############################################################
-$date=Get-Date -format "yyyy-MM-d"  
-$Filename="Patchinfo-$($date)"  
-$Computers = Get-Content "c:\scripts\powershell\kbchecker\computers.txt"  
-$logdir = "c:\scripts\powershell\kbchecker\logs"
-# Enter KB to be checked here  
-$Patch = Read-Host 'Enter the KB number - eg: KB3011780 ' 
-$loggingLevel = $WARNING
+$date=Get-Date -format "yyyyMMdddHHmm"  
+$Filename="$Patch_$date.log"  
+$Computers = Get-Content "$PSScriptRoot\computers.txt"  
+$Global:logfile = "$PSScriptRoot\logs\$filename"
+$Global:loggingLevel = $DEBUG
 
 ##############################################################
 # Main Execution                                             #
-##############################################################
+############################################################## 
+write-host "logging level set to $loggingLevel"
+
 # Main Loop
 write-log $DEBUG "beginning main loop"
 foreach ($Computer in $Computers){
@@ -37,8 +40,8 @@ foreach ($Computer in $Computers){
         Remove-PSSession $sess
         write-log $INFO "terminating PSSESSION to $Computer"
     }CATCH{  
-        Write-Log $ERROR "Error occurred processing $computer"
-        Write-Log $ERROR "Error: $_.Exception.Message"
+        Write-Log $ERR "Error occurred processing $computer"
+        Write-Log $ERR "Error: $_.Exception.Message"
     } #end try/catch
     write-log $DEBUG "finished with $Computer"
 }#end main loop
