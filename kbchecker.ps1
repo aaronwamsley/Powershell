@@ -37,8 +37,8 @@ foreach ($Computer in $Computers){
         Remove-PSSession $sess
         write-log $INFO "terminating PSSESSION to $Computer"
     }CATCH{  
-        Write-Log $ERROR "Error occurred processing $computer" $true
-        Write-Log $ERROR "Error: $_.Exception.Message" $true
+        Write-Log $ERROR "Error occurred processing $computer"
+        Write-Log $ERROR "Error: $_.Exception.Message"
     } #end try/catch
     write-log $DEBUG "finished with $Computer"
 }#end main loop
