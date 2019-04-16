@@ -13,8 +13,8 @@ $Patch = Read-Host 'Enter the KB number - eg: KB3011780 '
 ##############################################################
 # Global Variables                                           #
 ##############################################################
-$date=Get-Date -format "yyyyMMdddHHmm"  
-$Filename="$Patch_$date.log"  
+$date=Get-Date -format "yyyyMMddHHmm"  
+$Filename="$Patch-$date.log"  
 $Computers = Get-Content "$PSScriptRoot\computers.txt"  
 $Global:logfile = "$PSScriptRoot\logs\$filename"
 $Global:loggingLevel = $DEBUG
