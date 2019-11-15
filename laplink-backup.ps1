@@ -13,7 +13,7 @@ $date         = Get-Date -Format "yyyyMMdd"
 $name         = "LapLink-Backup"
 $scriptDir    = $PSScriptRoot
 $logfile      = "$scriptDir\logs\$name$date.txt"
-$lapDir       = "\\pnas02fs1\Software\Laplink"
+$lapDir       = "\\path\to\softwareShare"
 $PCmover      = "$lapDir\PCmover Enterprise\PCmover Client\PCmover.exe"
 
 ###########################################################
@@ -58,14 +58,11 @@ Function Write-Log{
 Function Filter-User{
     Param([String]$userid)
     #eliminations
-    if($userid.StartsWith('_')){ return $false }
-    if($userid.StartsWith('~')){ return $false }
     if($userid.Contains("friartuck")){ return $false }
     if($userid.Contains("MsDtsServer120")) { return $false }
     if($userid.Contains("ReportServer")){ return $false }
     if($userid.Contains("Administrator")){ return $false }
     if($userid.Contains("Support")){ return $false }
-    if($userid.Contains("mosbrax")){ return $false }
     if($userid.Contains("public")){ return $false }
     if($userid.Contains("default")){ return $false }
 
