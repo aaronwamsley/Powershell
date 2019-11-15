@@ -30,7 +30,7 @@ $sessions
 ######################################################
 Write-Log "mapping software share"
 try{
-    New-PSDrive -Name "P" -PSProvider "FileSystem" -Root "\\pnas01\software\oracle\java\jre\versions\Current"
+    New-PSDrive -Name "P" -PSProvider "FileSystem" -Root "\\path\to\SoftwareShare\oracle\java\jre\versions\Current"
 }catch{
     Write-Log "failed to map software share"
     exit 1
